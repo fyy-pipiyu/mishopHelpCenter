@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi">
+    <title>小米客服</title>
+    <style>
+        /* 强制页面宽度为手机宽度 */
+        @media (min-width: 768px) {
+            body {
+                max-width: 480px;
+                margin: 0 auto;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                position: relative;
+            }
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.5;
+        }
+        
+        /* 通用样式 */
+        .page {
+            display: none;
+            min-height: 100vh;
+            background-color: #fff;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* 头部样式 */
+        .header {
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            padding: 12px 16px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+        }
+        
+        .header .back-btn {
+            font-size: 16px;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .header h1 {
+            font-size: 18px;
+            font-weight: 500;
+            flex: 1;
+            text-align: center;
+            margin: 0 16px;
+        }
+        
+        /* 服务中心页面 */
+        .service-center {
+            padding-bottom: 100px;
+        }
+        
+        .banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px 16px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .banner h2 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        
+        .banner-btn {
+            display: inline-block;
+            padding: 6px 16px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid #fff;
+            border-radius: 16px;
+            color: #fff;
+            font-size: 14px;
+            text-decoration: none;
+            margin-top: 8px;
+        }
+        
+        .banner-images {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 120px;
+            height: 80px;
+        }
+        
+        .banner-images img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .service-icons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            padding: 20px 0;
+            background-color: #fff;
+        }
+        
+        .service-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px;
+        }
+        
+        .service-icon img {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 8px;
+        }
+        
+        .service-icon span {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .help-center {
+            margin-top: 10px;
+            background-color: #fff;
+            padding: 16px;
+        }
+        
+        .help-center h3 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .help-center h3 .search-btn {
+            font-size: 14px;
+            color: #999;
+        }
+        
+        .help-tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 16px;
+        }
+        
+        .help-tab {
+            flex: 1;
+            padding: 12px 0;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .help-tab.active {
+            color: #ff6700;
+            border-bottom-color: #ff6700;
+        }
+        
+        .help-list {
+            list-style: none;
+        }
+        
+        .help-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .help-item:last-child {
+            border-bottom: none;
+        }
+        
+        .help-item a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            display: block;
+        }
+        
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            background-color: #fff;
+            border-top: 1px solid #e0e0e0;
+            padding: 12px 16px;
+            z-index: 100;
+        }
+        
+        /* 确保底部栏在浏览器中打开时也能与主体页面宽度一致 */
+        @media (min-width: 768px) {
+            .bottom-bar {
+                max-width: 480px;
+                left: 0;
+                right: 0;
+                margin: 0 auto;
+                transform: none;
+            }
+        }
+        
+        .hotline {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .hotline-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        
+        .hotline-text {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .online-service {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .online-service-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        
+        .online-service-text {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* 订单商品选择器遮罩 */
+        .selector-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            display: none;
+        }
+        
+        .selector-overlay.active {
+            display: block;
+        }
+        
+        /* 确保遮罩层在浏览器中打开时也能与主页面宽度一致 */
+        @media (min-width: 768px) {
+            .selector-overlay {
+                max-width: 480px;
+                left: 0;
+                right: 0;
+                margin: 0 auto;
+            }
+        }
+        
+        /* 订单商品选择器 */
+        .order-selector {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: calc(100vh - 60px);
+            max-height: calc(100vh - 60px);
+            background-color: #fff;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 确保订单商品选择器浮窗在浏览器中打开时也能与主页面宽度一致 */
+        @media (min-width: 768px) {
+            .order-selector {
+                max-width: 480px;
+                left: 0;
+                right: 0;
+                margin: 0 auto;
+            }
+        }
+        
+        .selector-header {
+            padding: 16px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .selector-header h2 {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .selector-tabs {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            background-color: #fff;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+            position: sticky;
+            top: 60px;
+            z-index: 999;
+        }
+        
+        .selector-tab {
+            padding: 0 16px;
+            font-size: 14px;
+            color: #666;
+            position: relative;
+        }
+        
+        .selector-tab.active {
+            color: #ff6700;
+        }
+        
+        .selector-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -13px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 2px;
+            background-color: #ff6700;
+        }
+        
+        .search-box {
+            padding: 12px 16px;
+            background-color: #fff;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            font-size: 14px;
+            background-color: #f5f5f5;
+        }
+        
+        .order-list {
+            padding: 16px;
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .order-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .order-item {
+            display: flex;
+            margin-bottom: 12px;
+        }
+        
+        .order-item-image {
+            width: 80px;
+            height: 80px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .order-item-image img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+        }
+        
+        .order-item-info {
+            flex: 1;
+        }
+        
+        .order-item-name {
+            font-size: 14px;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+        
+        .order-item-count {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 4px;
+        }
+        
+        .order-item-price {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .order-footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .send-btn {
+            padding: 6px 16px;
+            background-color: #ff6700;
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        /* 机器人首页 */
+        .robot-page {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        .robot-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #fff;
+        }
+        
+        .robot-header .back-btn {
+            font-size: 16px;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .robot-header h1 {
+            font-size: 18px;
+            font-weight: 500;
+            flex: 1;
+            text-align: center;
+            margin: 0 16px;
+        }
+        
+        .robot-header .human-btn {
+            font-size: 14px;
+            color: #ff6700;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .robot-body {
+            flex: 1;
+            padding: 16px;
+            padding-bottom: 140px;
+            overflow-y: auto;
+            background-color: #f5f5f5;
+        }
+        
+        #chat-messages {
+            min-height: 200px;
+        }
+        
+        /* 逐步渲染效果 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .fade-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 底部气泡和输入框一起固定在页面下方 */
+        .bubbles {
+            padding: 12px 16px;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            border-top: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        /* 确保气泡在浏览器中打开时也能与主页面宽度一致 */
+        @media (min-width: 768px) {
+            .bubbles {
+                max-width: 480px;
+                left: 0;
+                right: 0;
+                margin: 0 auto;
+            }
+        }
+        
+        /* 机器人页面底部容器，确保气泡和输入框一起固定在页面下方 */
+        .robot-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #fff;
+            z-index: 100;
+        }
+        
+        /* 确保机器人页面底部容器在浏览器中打开时也能与主页面宽度一致 */
+        @media (min-width: 768px) {
+            .robot-bottom {
+                max-width: 480px;
+                left: 0;
+                right: 0;
+                margin: 0 auto;
+            }
+        }
+        
+        .message {
+            margin-bottom: 16px;
+        }
+        
+        .message.robot {
+            display: flex;
+        }
+        
+        .message.robot .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #ff6700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        
+        .message.robot .avatar span {
+            color: #fff;
+            font-size: 16px;
+        }
+        
+        .message.robot .content {
+            background-color: #fff;
+            padding: 12px;
+            border-radius: 16px 16px 16px 4px;
+            max-width: 80%;
+        }
+        
+        .message.user {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .message.user .content {
+            background-color: #ff6700;
+            color: #fff;
+            padding: 12px;
+            border-radius: 16px 16px 4px 16px;
+            max-width: 80%;
+        }
+        
+        .selected-product {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .selected-product-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .selected-product-item {
+            display: flex;
+        }
+        
+        .selected-product-image {
+            width: 80px;
+            height: 80px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .selected-product-image img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+        }
+        
+        .selected-product-info {
+            flex: 1;
+        }
+        
+        .selected-product-name {
+            font-size: 14px;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+        
+        .selected-product-count {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 4px;
+        }
+        
+        .selected-product-price {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .selected-product-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 12px;
+        }
+        
+        .after-sales-btn {
+            padding: 4px 12px;
+            border: 1px solid #ff6700;
+            color: #ff6700;
+            border-radius: 12px;
+            font-size: 12px;
+            background: none;
+            cursor: pointer;
+        }
+        
+        .robot-belt {
+            display: flex;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .belt-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .belt-item-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 4px;
+        }
+        
+        .belt-item-icon span {
+            font-size: 18px;
+        }
+        
+        .belt-item-text {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .guess-section {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .guess-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .guess-header h3 {
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .guess-header h3::before {
+            content: '?';
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background-color: #ff6700;
+            color: #fff;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 16px;
+            font-size: 12px;
+            margin-right: 6px;
+        }
+        
+        .refresh-btn {
+            font-size: 12px;
+            color: #999;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .guess-list {
+            list-style: none;
+        }
+        
+        .guess-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .guess-item:last-child {
+            border-bottom: none;
+        }
+        
+        .guess-item a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            flex: 1;
+        }
+        
+        .guess-item .arrow {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .bubble {
+            padding: 6px 12px;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 16px;
+            font-size: 12px;
+            color: #666;
+            cursor: pointer;
+        }
+        
+        .robot-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 12px 16px;
+            background-color: #fff;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        /* 确保机器人页面底部栏在浏览器中打开时也能与主体页面宽度一致 */
+        @media (min-width: 768px) {
+            .robot-footer {
+                max-width: 480px;
+                left: 0;
+                right: 0;
+                margin: 0 auto;
+                transform: none;
+            }
+        }
+        
+        .input-box {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background-color: #f5f5f5;
+            border-radius: 20px;
+            padding: 8px 16px;
+            margin-right: 12px;
+        }
+        
+        .robot-input {
+            flex: 1;
+            border: none;
+            background: none;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .emoji-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+        
+        .plus-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #f5f5f5;
+            border: none;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        /* 默认页面 */
+        .default-page {
+            padding: 40px 16px;
+            text-align: center;
+        }
+        
+        .default-content {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        
+        .default-back-btn {
+            padding: 10px 24px;
+            background-color: #ff6700;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        /* 功能区 */
+        .function-area {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #fff;
+            border-radius: 16px 16px 0 0;
+            padding: 16px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 99;
+        }
+        
+        /* 确保功能区在浏览器中打开时也能与主体页面宽度一致 */
+        @media (min-width: 768px) {
+            .function-area {
+                width: calc(100% - 32px);
+                max-width: 448px;
+                left: 50%;
+                transform: translateX(-50%);
+                margin: 0;
+            }
+        }
+        
+        .function-area.active {
+            display: block;
+        }
+        
+        .function-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        
+        .function-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .function-item-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 4px;
+        }
+        
+        .function-item-icon span {
+            font-size: 24px;
+        }
+        
+        .function-item-text {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* 表情包选择器 */
+        .emoji-picker {
+            position: fixed;
+            bottom: 120px;
+            left: 16px;
+            right: 16px;
+            background-color: #fff;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 101;
+        }
+        
+        /* 确保表情包选择器在浏览器中打开时也能与主体页面宽度一致 */
+        @media (min-width: 768px) {
+            .emoji-picker {
+                max-width: 448px;
+                left: 50%;
+                transform: translateX(-50%);
+                margin: 0;
+            }
+        }
+        
+        .emoji-picker.active {
+            display: block;
+        }
+        
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 16px;
+        }
+        
+        .emoji-item {
+            font-size: 24px;
+            text-align: center;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+        }
+        
+        .emoji-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .service-icons {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .help-tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            .help-tab {
+                flex-shrink: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 服务中心页面 -->
+    <div id="service-center" class="page active">
+        <div class="header">
+            <span style="width: 20px;"></span>
+            <h1>服务中心</h1>
+            <span style="width: 20px;"></span>
+        </div>
+        
+        <div class="banner">
+            <h2>智能电视机便捷看电视指南</h2>
+            <a href="#" class="banner-btn" onclick="goToDefaultPage()">立即查看</a>
+        </div>
+        
+        <div class="service-icons">
+            <div class="service-icon" onclick="goToDefaultPage()">
+                <div style="width: 48px; height: 48px; background-color: #e8f5e8; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                    <span style="font-size: 24px; color: #4caf50;">+</span>
+                </div>
+                <span>售后服务</span>
+            </div>
+            <div class="service-icon" onclick="goToDefaultPage()">
+                <div style="width: 48px; height: 48px; background-color: #e3f2fd; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                    <span style="font-size: 20px; color: #2196f3;">📄</span>
+                </div>
+                <span>售后政策</span>
+            </div>
+            <div class="service-icon" onclick="goToDefaultPage()">
+                <div style="width: 48px; height: 48px; background-color: #fff3e0; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                    <span style="font-size: 20px; color: #ff9800;">📍</span>
+                </div>
+                <span>服务中心</span>
+            </div>
+            <div class="service-icon" onclick="goToDefaultPage()">
+                <div style="width: 48px; height: 48px; background-color: #f3e5f5; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                    <span style="font-size: 20px; color: #9c27b0;">📋</span>
+                </div>
+                <span>客服反馈</span>
+            </div>
+            <div class="service-icon" onclick="goToDefaultPage()">
+                <div style="width: 48px; height: 48px; background-color: #fff3e0; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                    <span style="font-size: 20px; color: #ff9800;">💰</span>
+                </div>
+                <span>维修价格</span>
+            </div>
+            <div class="service-icon" onclick="goToDefaultPage()">
+                <div style="width: 48px; height: 48px; background-color: #e8f5e8; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                    <span style="font-size: 20px; color: #4caf50;">✅</span>
+                </div>
+                <span>真伪查询</span>
+            </div>
+            <div class="service-icon" onclick="goToDefaultPage()">
+                <div style="width: 48px; height: 48px; background-color: #e3f2fd; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                    <span style="font-size: 20px; color: #2196f3;">📱</span>
+                </div>
+                <span>以旧换新</span>
+            </div>
+            <div class="service-icon" onclick="goToDefaultPage()">
+                <div style="width: 48px; height: 48px; background-color: #f3e5f5; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                    <span style="font-size: 20px; color: #9c27b0;">🛡️</span>
+                </div>
+                <span>保障权益</span>
+            </div>
+        </div>
+        
+        <div class="help-center">
+            <h3>帮助中心 <span class="search-btn" onclick="goToDefaultPage()">🔍</span></h3>
+            <div class="help-tabs">
+                <div class="help-tab active" onclick="switchHelpTab('account')">账户</div>
+                <div class="help-tab" onclick="switchHelpTab('order')">订单</div>
+                <div class="help-tab" onclick="switchHelpTab('activity')">活动</div>
+                <div class="help-tab" onclick="switchHelpTab('aftersale')">售后</div>
+                <div class="help-tab" onclick="switchHelpTab('tech')">技术支持</div>
+                <div class="help-tab" onclick="switchHelpTab('system')">系统</div>
+            </div>
+            <ul class="help-list" id="help-list">
+                <li class="help-item" onclick="goToDefaultPage()"><a href="#">小米账号如何注册</a></li>
+                <li class="help-item" onclick="goToDefaultPage()"><a href="#">如何确认手机解锁账户</a></li>
+                <li class="help-item" onclick="goToDefaultPage()"><a href="#">小米账号忘记密码如何找回</a></li>
+                <li class="help-item" onclick="goToDefaultPage()"><a href="#">手机被他人小米账号绑定如何申诉解锁</a></li>
+                <li class="help-item" onclick="goToDefaultPage()"><a href="#">如何修改小米账号绑定的信息</a></li>
+            </ul>
+        </div>
+        
+        <div class="bottom-bar">
+            <div class="hotline" onclick="goToDefaultPage()">
+                <div class="hotline-text">热线电话</div>
+                <div class="hotline-text">周一至周日</div>
+            </div>
+            <div class="online-service" onclick="goToRobotPageWithSelector()">
+                <div class="online-service-text">在线客服</div>
+                <div class="online-service-text">7x24人工</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 订单商品选择器遮罩 -->
+    <div id="selector-overlay" class="selector-overlay"></div>
+    
+    <!-- 订单商品选择器 -->
+    <div id="order-selector" class="order-selector" style="display: none;">
+        <div class="selector-header">
+            <a href="#" class="back-btn" onclick="hideOrderSelector()">&lt;</a>
+            <h2>请选择您想要咨询的内容</h2>
+            <span style="width: 20px;"></span>
+        </div>
+        
+        <div class="selector-tabs">
+            <div class="selector-tab active" onclick="switchTab('order')">订单</div>
+            <div class="selector-tab" onclick="switchTab('service')">服务单</div>
+            <div class="selector-tab" onclick="switchTab('customer')">客服服务单</div>
+            <div class="selector-tab" onclick="switchTab('browse')">最近浏览</div>
+            <div class="selector-tab" onclick="switchTab('cart')">购物车</div>
+            <div class="selector-tab" onclick="switchTab('favorite')">收藏</div>
+        </div>
+        
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="请输入产品名称或订单号">
+        </div>
+        
+        <div class="order-list" id="order-list">
+            <!-- 订单1 -->
+            <div class="order-card" onclick="selectProduct('Redmi7A 全网通版 3GB+32GB', '订单号: 5200625743901167', '2020-06-25 11:38:08', '共2件商品', '¥ 549.00')">
+                <div class="order-header">
+                    <span>订单号: 5200625743901167</span>
+                    <span>2020-06-25 11:38:08</span>
+                </div>
+                <div class="order-item">
+                    <div class="order-item-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' fill='%23f5f5f5'/%3E%3Ctext x='30' y='35' text-anchor='middle' fill='%23999' font-size='12'%3E手机%3C/text%3E%3C/svg%3E" alt="Redmi7A" />
+                    </div>
+                    <div class="order-item-info">
+                        <div class="order-item-name">Redmi7A 全网通版 3GB+32GB</div>
+                        <div class="order-item-count">共2件商品</div>
+                        <div class="order-item-price">¥ 549.00</div>
+                    </div>
+                </div>
+                <div class="order-footer">
+                    <button class="send-btn">发送</button>
+                </div>
+            </div>
+            
+            <!-- 订单2 -->
+            <div class="order-card" onclick="selectProduct('小米体脂秤2 白色', '订单号: 5200422655100022', '2020-04-22 11:35:08', '共1件商品', '¥ 99.00')">
+                <div class="order-header">
+                    <span>订单号: 5200422655100022</span>
+                    <span>2020-04-22 11:35:08</span>
+                </div>
+                <div class="order-item">
+                    <div class="order-item-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' fill='%23f5f5f5'/%3E%3Ctext x='30' y='35' text-anchor='middle' fill='%23999' font-size='12'%3E体脂秤%3C/text%3E%3C/svg%3E" alt="小米体脂秤2" />
+                    </div>
+                    <div class="order-item-info">
+                        <div class="order-item-name">小米体脂秤2 白色</div>
+                        <div class="order-item-count">共1件商品</div>
+                        <div class="order-item-price">¥ 99.00</div>
+                    </div>
+                </div>
+                <div class="order-footer">
+                    <button class="send-btn">发送</button>
+                </div>
+            </div>
+            
+            <!-- 订单3 -->
+            <div class="order-card" onclick="selectProduct('小米体脂秤2 白色', '订单号: 5200410297600215', '2020-04-10 00:29:43', '共1件商品', '¥ 49.00')">
+                <div class="order-header">
+                    <span>订单号: 5200410297600215</span>
+                    <span>2020-04-10 00:29:43</span>
+                </div>
+                <div class="order-item">
+                    <div class="order-item-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' fill='%23f5f5f5'/%3E%3Ctext x='30' y='35' text-anchor='middle' fill='%23999' font-size='12'%3E体脂秤%3C/text%3E%3C/svg%3E" alt="小米体脂秤2" />
+                    </div>
+                    <div class="order-item-info">
+                        <div class="order-item-name">小米体脂秤2 白色</div>
+                        <div class="order-item-count">共1件商品</div>
+                        <div class="order-item-price">¥ 49.00</div>
+                    </div>
+                </div>
+                <div class="order-footer">
+                    <button class="send-btn">发送</button>
+                </div>
+            </div>
+            
+            <!-- 订单4 -->
+            <div class="order-card" onclick="selectProduct('米家毛球修剪器 白色', '订单号: 5191130829202418', '2019-11-30 17:12:45', '共1件商品', '¥ 39.90')">
+                <div class="order-header">
+                    <span>订单号: 5191130829202418</span>
+                    <span>2019-11-30 17:12:45</span>
+                </div>
+                <div class="order-item">
+                    <div class="order-item-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' fill='%23f5f5f5'/%3E%3Ctext x='30' y='35' text-anchor='middle' fill='%23999' font-size='12'%3E毛球修剪器%3C/text%3E%3C/svg%3E" alt="米家毛球修剪器" />
+                    </div>
+                    <div class="order-item-info">
+                        <div class="order-item-name">米家毛球修剪器 白色</div>
+                        <div class="order-item-count">共1件商品</div>
+                        <div class="order-item-price">¥ 39.90</div>
+                    </div>
+                </div>
+                <div class="order-footer">
+                    <button class="send-btn">发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 机器人首页 -->
+    <div id="robot-page" class="page">
+        <div class="robot-header">
+            <a href="#" class="back-btn" onclick="goToServiceCenter()">&lt;</a>
+            <h1>小米客服</h1>
+            <button class="human-btn" onclick="goToDefaultPage()">转人工</button>
+        </div>
+        
+        <div class="robot-body">
+            <!-- 选择的商品卡片 -->
+            <div class="selected-product fade-in" id="selected-product">
+                <div class="selected-product-header">
+                    <span>2020-04-22 11:35:08</span>
+                    <span>已收货</span>
+                </div>
+                <div class="selected-product-item">
+                    <div class="selected-product-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' fill='%23f5f5f5'/%3E%3Ctext x='30' y='35' text-anchor='middle' fill='%23999' font-size='12'%3E体脂秤%3C/text%3E%3C/svg%3E" alt="小米体脂秤2" />
+                    </div>
+                    <div class="selected-product-info">
+                        <div class="selected-product-name">小米体脂秤2 白色</div>
+                        <div class="selected-product-count">共1件商品</div>
+                        <div class="selected-product-price">实付金额 ¥99.00</div>
+                    </div>
+                </div>
+                <div class="selected-product-footer">
+                    <button class="after-sales-btn" onclick="goToDefaultPage()">申请售后</button>
+                </div>
+            </div>
+            
+            <!-- 机器人欢迎语 -->
+            <div class="message robot fade-in">
+                <div class="avatar">🤖</div>
+                <div class="content" id="welcome-message">您好，请问您想咨询哪款产品呢，很高兴为您解答～</div>
+            </div>
+            
+            <!-- 机器人腰带 -->
+            <div class="robot-belt fade-in">
+                <div class="belt-item" onclick="goToDefaultPage()">
+                    <div class="belt-item-icon">
+                        <span>补</span>
+                    </div>
+                    <div class="belt-item-text">国补攻略</div>
+                </div>
+                <div class="belt-item" onclick="goToDefaultPage()">
+                    <div class="belt-item-icon">
+                        <span>🔧</span>
+                    </div>
+                    <div class="belt-item-text">退换返修</div>
+                </div>
+                <div class="belt-item" onclick="goToDefaultPage()">
+                    <div class="belt-item-icon">
+                        <span>📍</span>
+                    </div>
+                    <div class="belt-item-text">服务网点</div>
+                </div>
+                <div class="belt-item" onclick="goToDefaultPage()">
+                    <div class="belt-item-icon">
+                        <span>📋</span>
+                    </div>
+                    <div class="belt-item-text">售后进度</div>
+                </div>
+                <div class="belt-item" onclick="goToDefaultPage()">
+                    <div class="belt-item-icon">
+                        <span>🧾</span>
+                    </div>
+                    <div class="belt-item-text">发票服务</div>
+                </div>
+            </div>
+            
+            <!-- 猜你想问 -->
+            <div class="guess-section fade-in">
+                <div class="guess-header">
+                    <h3>猜你想问</h3>
+                    <button class="refresh-btn" onclick="goToDefaultPage()">🔄 换一换</button>
+                </div>
+                <ul class="guess-list" id="guess-list">
+                    <li class="guess-item" onclick="sendMessage(this.querySelector('a').textContent)">
+                        <a href="#">小米体脂秤2 白色的参数配置是什么？</a>
+                        <span class="arrow">›</span>
+                    </li>
+                    <li class="guess-item" onclick="sendMessage(this.querySelector('a').textContent)">
+                        <a href="#">小米体脂秤2 白色如何申请售后？</a>
+                        <span class="arrow">›</span>
+                    </li>
+                    <li class="guess-item" onclick="sendMessage(this.querySelector('a').textContent)">
+                        <a href="#">小米体脂秤2 白色现在有什么活动？</a>
+                        <span class="arrow">›</span>
+                    </li>
+                    <li class="guess-item" onclick="sendMessage(this.querySelector('a').textContent)">
+                        <a href="#">小米体脂秤2 白色是否参与国补？</a>
+                        <span class="arrow">›</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- 聊天记录 -->
+            <div id="chat-messages">
+                <!-- 聊天记录会动态添加 -->
+            </div>
+        </div>
+        
+        <div class="robot-bottom">
+            <div class="bubbles fade-in">
+                <div class="bubble" onclick="sendBubble('春节物流公告')">春节物流公告</div>
+                <div class="bubble" onclick="sendBubble('电池换新攻略')">电池换新攻略</div>
+                <div class="bubble" onclick="sendBubble('国补绑卡方法')">国补绑卡方法</div>
+                <div class="bubble" onclick="sendBubble('小米彩')">小米彩</div>
+            </div>
+            
+            <div class="robot-footer">
+                <div class="input-box">
+                    <input type="text" class="robot-input" id="robot-input" placeholder="请输入您要咨询的问题">
+                    <button class="emoji-btn" onclick="toggleEmojiPicker()">😀</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 表情包选择器 -->
+        <div id="emoji-picker" class="emoji-picker">
+            <div class="emoji-grid">
+                <div class="emoji-item" onclick="sendEmoji('😀')">😀</div>
+                <div class="emoji-item" onclick="sendEmoji('😂')">😂</div>
+                <div class="emoji-item" onclick="sendEmoji('😍')">😍</div>
+                <div class="emoji-item" onclick="sendEmoji('🤔')">🤔</div>
+                <div class="emoji-item" onclick="sendEmoji('😢')">😢</div>
+                <div class="emoji-item" onclick="sendEmoji('😡')">😡</div>
+                <div class="emoji-item" onclick="sendEmoji('👍')">👍</div>
+                <div class="emoji-item" onclick="sendEmoji('👎')">👎</div>
+                <div class="emoji-item" onclick="sendEmoji('❤️')">❤️</div>
+                <div class="emoji-item" onclick="sendEmoji('🎉')">🎉</div>
+                <div class="emoji-item" onclick="sendEmoji('🔥')">🔥</div>
+                <div class="emoji-item" onclick="sendEmoji('💯')">💯</div>
+                <div class="emoji-item" onclick="sendEmoji('👏')">👏</div>
+                <div class="emoji-item" onclick="sendEmoji('🙏')">🙏</div>
+                <div class="emoji-item" onclick="sendEmoji('🤣')">🤣</div>
+                <div class="emoji-item" onclick="sendEmoji('😅')">😅</div>
+                <div class="emoji-item" onclick="sendEmoji('😎')">😎</div>
+                <div class="emoji-item" onclick="sendEmoji('🤩')">🤩</div>
+                <div class="emoji-item" onclick="sendEmoji('😘')">😘</div>
+                <div class="emoji-item" onclick="sendEmoji('😋')">😋</div>
+                <div class="emoji-item" onclick="sendEmoji('🤗')">🤗</div>
+            </div>
+        </div>
+        
+        <!-- 功能区 -->
+        <div id="function-area" class="function-area">
+            <div class="function-grid">
+                <div class="function-item" onclick="goToDefaultPage()">
+                    <div class="function-item-icon">
+                        <span>📋</span>
+                    </div>
+                    <div class="function-item-text">订单</div>
+                </div>
+                <div class="function-item" onclick="goToDefaultPage()">
+                    <div class="function-item-icon">
+                        <span>🛍️</span>
+                    </div>
+                    <div class="function-item-text">商品</div>
+                </div>
+                <div class="function-item" onclick="goToDefaultPage()">
+                    <div class="function-item-icon">
+                        <span>📄</span>
+                    </div>
+                    <div class="function-item-text">服务单</div>
+                </div>
+                <div class="function-item" onclick="goToDefaultPage()">
+                    <div class="function-item-icon">
+                        <span>💬</span>
+                    </div>
+                    <div class="function-item-text">客服服务</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 默认页面 -->
+    <div id="default-page" class="page">
+        <div class="header">
+            <a href="#" class="back-btn" onclick="goBackFromDefault()">&lt;</a>
+            <h1>页面功能</h1>
+            <span style="width: 20px;"></span>
+        </div>
+        <div class="default-page">
+            <div class="default-content">此页面功能与原来保持一致</div>
+            <button class="default-back-btn" onclick="goBackFromDefault()">返回</button>
+        </div>
+    </div>
+    
+    <script>
+        // 页面切换
+        function showPage(pageId) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            // 显示目标页面
+            document.getElementById(pageId).classList.add('active');
+        }
+        
+        // 从服务中心进入订单选择器
+        function goToOrderSelector() {
+            showPage('order-selector');
+        }
+        
+        // 从订单选择器返回服务中心
+        function goToServiceCenter() {
+            showPage('service-center');
+        }
+        
+        // 选择商品后进入机器人页面
+        function selectProduct(productName, orderId, orderTime, count, price) {
+            // 更新选择的商品信息
+            document.getElementById('selected-product').innerHTML = `
+                <div class="selected-product-header">
+                    <span>${orderTime}</span>
+                    <span>已收货</span>
+                </div>
+                <div class="selected-product-item">
+                    <div class="selected-product-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' fill='%23f5f5f5'/%3E%3Ctext x='30' y='35' text-anchor='middle' fill='%23999' font-size='12'%3E商品%3C/text%3E%3C/svg%3E" alt="${productName}" />
+                    </div>
+                    <div class="selected-product-info">
+                        <div class="selected-product-name">${productName}</div>
+                        <div class="selected-product-count">${count}</div>
+                        <div class="selected-product-price">实付金额 ${price}</div>
+                    </div>
+                </div>
+                <div class="selected-product-footer">
+                    <button class="after-sales-btn" onclick="goToDefaultPage()">申请售后</button>
+                </div>
+            `;
+            
+            // 更新欢迎语
+            document.getElementById('welcome-message').textContent = `请问您要咨询${productName}的什么问题`;
+            
+            // 更新猜你想问
+            document.getElementById('guess-list').innerHTML = `
+                <li class="guess-item" onclick="sendMessage(this.querySelector('a').textContent)">
+                    <a href="#">${productName}的参数配置是什么？</a>
+                    <span class="arrow">›</span>
+                </li>
+                <li class="guess-item" onclick="sendMessage(this.querySelector('a').textContent)">
+                    <a href="#">${productName}如何申请售后？</a>
+                    <span class="arrow">›</span>
+                </li>
+                <li class="guess-item" onclick="sendMessage(this.querySelector('a').textContent)">
+                    <a href="#">${productName}现在有什么活动？</a>
+                    <span class="arrow">›</span>
+                </li>
+                <li class="guess-item" onclick="sendMessage(this.querySelector('a').textContent)">
+                    <a href="#">${productName}是否参与国补？</a>
+                    <span class="arrow">›</span>
+                </li>
+            `;
+            
+            // 隐藏订单商品选择器
+            hideOrderSelector();
+            
+            // 确保显示机器人页面
+            showPage('robot-page');
+            
+            // 重新添加fade-in类，以便再次实现逐步渲染效果
+            setTimeout(() => {
+                const fadeElements = document.querySelectorAll('.fade-in');
+                fadeElements.forEach(element => {
+                    element.classList.remove('active');
+                });
+                
+                // 延迟执行，确保页面已经显示
+                setTimeout(() => {
+                    fadeElements.forEach((element, index) => {
+                        // 按照顺序，每个元素延迟一定时间显示
+                        setTimeout(() => {
+                            element.classList.add('active');
+                        }, index * 200);
+                    });
+                }, 100);
+            }, 100);
+        }
+        
+        // 切换订单选择器的tab
+        function switchTab(tabName) {
+            // 更新tab状态
+            document.querySelectorAll('.selector-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 清空订单列表
+            const orderList = document.getElementById('order-list');
+            
+            // 根据tab显示不同内容
+            if (tabName === 'order') {
+                // 显示订单列表
+                orderList.innerHTML = `
+                    <!-- 订单1 -->
+                    <div class="order-card" onclick="selectProduct('Redmi7A 全网通版 3GB+32GB', '订单号: 5200625743901167', '2020-06-25 11:38:08', '共2件商品', '¥ 549.00')">
+                        <div class="order-header">
+                            <span>订单号: 5200625743901167</span>
+                            <span>2020-06-25 11:38:08</span>
+                        </div>
+                        <div class="order-item">
+                            <div class="order-item-image">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' fill='%23f5f5f5'/%3E%3Ctext x='30' y='35' text-anchor='middle' fill='%23999' font-size='12'%3E手机%3C/text%3E%3C/svg%3E" alt="Redmi7A" />
+                            </div>
+                            <div class="order-item-info">
+                                <div class="order-item-name">Redmi7A 全网通版 3GB+32GB</div>
+                                <div class="order-item-count">共2件商品</div>
+                                <div class="order-item-price">¥ 549.00</div>
+                            </div>
+                        </div>
+                        <div class="order-footer">
+                            <button class="send-btn">发送</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 订单2 -->
+                    <div class="order-card" onclick="selectProduct('小米体脂秤2 白色', '订单号: 5200422655100022', '2020-04-22 11:35:08', '共1件商品', '¥ 99.00')">
+                        <div class="order-header">
+                            <span>订单号: 5200422655100022</span>
+                            <span>2020-04-22 11:35:08</span>
+                        </div>
+                        <div class="order-item">
+                            <div class="order-item-image">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' fill='%23f5f5f5'/%3E%3Ctext x='30' y='35' text-anchor='middle' fill='%23999' font-size='12'%3E体脂秤%3C/text%3E%3C/svg%3E" alt="小米体脂秤2" />
+                            </div>
+                            <div class="order-item-info">
+                                <div class="order-item-name">小米体脂秤2 白色</div>
+                                <div class="order-item-count">共1件商品</div>
+                                <div class="order-item-price">¥ 99.00</div>
+                            </div>
+                        </div>
+                        <div class="order-footer">
+                            <
