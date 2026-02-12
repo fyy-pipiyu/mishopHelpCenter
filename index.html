@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -459,12 +459,27 @@
         }
         
         .robot-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
             padding: 12px 16px;
             border-bottom: 1px solid #e0e0e0;
             display: flex;
             align-items: center;
             justify-content: space-between;
             background-color: #fff;
+            z-index: 100;
+        }
+        
+        /* 确保机器人页面头部在浏览器中打开时也能与主体页面宽度一致 */
+        @media (min-width: 768px) {
+            .robot-header {
+                max-width: 480px;
+                left: 0;
+                right: 0;
+                margin: 0 auto;
+            }
         }
         
         .robot-header .back-btn {
@@ -492,6 +507,7 @@
         .robot-body {
             flex: 1;
             padding: 16px;
+            padding-top: 60px;
             padding-bottom: 140px;
             overflow-y: auto;
             background-color: #f5f5f5;
@@ -513,28 +529,7 @@
             transform: translateY(0);
         }
         
-        /* 底部气泡和输入框一起固定在页面下方 */
-        .bubbles {
-            padding: 12px 16px;
-            background-color: #f5f5f5;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            border-top: 1px solid #e0e0e0;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        
-        /* 确保气泡在浏览器中打开时也能与主页面宽度一致 */
-        @media (min-width: 768px) {
-            .bubbles {
-                max-width: 480px;
-                left: 0;
-                right: 0;
-                margin: 0 auto;
-            }
-        }
-        
-        /* 机器人页面底部容器，确保气泡和输入框一起固定在页面下方 */
+        /* 机器人页面底部容器，确保输入框固定在页面下方 */
         .robot-bottom {
             position: fixed;
             bottom: 0;
@@ -744,14 +739,6 @@
             line-height: 16px;
             font-size: 12px;
             margin-right: 6px;
-        }
-        
-        .refresh-btn {
-            font-size: 12px;
-            color: #999;
-            background: none;
-            border: none;
-            cursor: pointer;
         }
         
         .guess-list {
@@ -1291,7 +1278,6 @@
             <div class="guess-section fade-in">
                 <div class="guess-header">
                     <h3>猜你想问</h3>
-                    <button class="refresh-btn" onclick="goToDefaultPage()">🔄 换一换</button>
                 </div>
                 <ul class="guess-list" id="guess-list">
                     <li class="guess-item" onclick="sendMessage(this.querySelector('a').textContent)">
@@ -1320,13 +1306,6 @@
         </div>
         
         <div class="robot-bottom">
-            <div class="bubbles fade-in">
-                <div class="bubble" onclick="sendBubble('春节物流公告')">春节物流公告</div>
-                <div class="bubble" onclick="sendBubble('电池换新攻略')">电池换新攻略</div>
-                <div class="bubble" onclick="sendBubble('国补绑卡方法')">国补绑卡方法</div>
-                <div class="bubble" onclick="sendBubble('小米彩')">小米彩</div>
-            </div>
-            
             <div class="robot-footer">
                 <div class="input-box">
                     <input type="text" class="robot-input" id="robot-input" placeholder="请输入您要咨询的问题">
@@ -1601,16 +1580,14 @@
             showPage(previousPage);
         }
         
-        // 发送气泡消息
-        function sendBubble(text) {
-            sendMessage(text);
-        }
+        
         
         // 发送消息
         function sendMessage(text) {
             if (!text) return;
             
             const chatMessages = document.getElementById('chat-messages');
+            const robotBody = document.querySelector('.robot-body');
             
             // 添加用户消息
             chatMessages.innerHTML += `
@@ -1622,11 +1599,10 @@
             // 清空输入框
             document.getElementById('robot-input').value = '';
             
-            // 滚动到底部
-            const robotBody = document.querySelector('.robot-body');
-            setTimeout(() => {
+            // 使用requestAnimationFrame确保DOM更新后执行滚动
+            requestAnimationFrame(() => {
                 robotBody.scrollTop = robotBody.scrollHeight;
-            }, 100);
+            });
             
             // 模拟机器人回复
             setTimeout(() => {
@@ -1636,10 +1612,11 @@
                         <div class="content">回答逻辑与原模型保持一致</div>
                     </div>
                 `;
-                // 滚动到底部
-                setTimeout(() => {
+                
+                // 使用requestAnimationFrame确保DOM更新后执行滚动
+                requestAnimationFrame(() => {
                     robotBody.scrollTop = robotBody.scrollHeight;
-                }, 100);
+                });
             }, 500);
         }
         
@@ -1865,5 +1842,4 @@
         }
     </script>
 </body>
-
 </html>
