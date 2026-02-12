@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -1738,6 +1738,8 @@
         function hideOrderSelector() {
             document.getElementById('order-selector').style.display = 'none';
             document.getElementById('selector-overlay').classList.remove('active');
+            // 返回服务中心页面
+            showPage('service-center');
         }
         
         // 初始化
@@ -1842,5 +1844,4 @@
         }
     </script>
 </body>
-
 </html>
